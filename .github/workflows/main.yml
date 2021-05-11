@@ -1,0 +1,27 @@
+# BEGIN
+# Action name
+name: MyPipeline
+
+# Event list
+on:
+  push: # On every push
+    branches: [main] # in main
+
+# To do list
+jobs:
+  build: # Job unique id
+    runs-on: ubuntu-latest # which pc run to
+    strategy: # define different variations to run each job in
+      matrix:
+        node-version: [15.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup jest
+        run: npm install
+      - name: Generate coverage report
+        run: npm run test:coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+
+# END
